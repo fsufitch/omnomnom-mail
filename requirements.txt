@@ -1,4 +1,5 @@
 yaul
+sqlalchemy
 
 ### Testing
 nose

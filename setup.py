@@ -12,5 +12,5 @@ setup(name='omnomnom',
       entry_points = {'console_scripts': [
           "omnomnom_smtp=omnomnom.mailserv.server:main",
       ]},
-      install_requires=['yaul'],
-      )
+      install_requires=['yaul', 'sqlalchemy'],
+)
