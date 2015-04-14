@@ -1,4 +1,4 @@
-import argparse, asyncore
+import argparse, asyncore, email
 from smtpd import SMTPServer
 
 from omnomnom.common.config import Configuration
@@ -10,11 +10,11 @@ class OmnomnomSMTPServer(SMTPServer):
         print("Rcpttos", rcpttos)
         print("Data", data)
         print("=================")
-        with open('/tmp/omnomnom_smtp.txt', 'w') as f:
-            print("Peer", peer, file=f)
-            print("Mailfrom", mailfrom, file=f)
-            print("Rcpttos", rcpttos, file=f)
-            print("Data", data, file=f)
+
+        mail = email.message_from_string(data)
+        for key in mail.keys():
+            print(key, "::", mail.get(key))
+        print(mail.get_payload())
             
     @staticmethod
     def run_server(conf):
