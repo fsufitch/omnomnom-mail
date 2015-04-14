@@ -2,8 +2,14 @@ import argparse, asyncore, email
 from smtpd import SMTPServer
 
 from omnomnom.common.config import Configuration
+from omnomnom.common.db import manager as db_manager
+from omnomnom.mailserv.processor import EmailProcessor
 
 class OmnomnomSMTPServer(SMTPServer):
+    def __init__(self, hostname, port, conf):
+        super(OmnomnomSMTPServer, self).__init__( (hostname, port), None)
+        self.conf = conf
+    
     def process_message(self, peer, mailfrom, rcpttos, data):
         print("Peer", peer)
         print("Mailfrom", mailfrom)
@@ -11,20 +17,18 @@ class OmnomnomSMTPServer(SMTPServer):
         print("Data", data)
         print("=================")
 
-        mail = email.message_from_string(data)
-        for key in mail.keys():
-            print(key, "::", mail.get(key))
-        print(mail.get_payload())
-            
+        msg = email.message_from_string(data)
+        EmailProcessor.record_email(msg)
+        
     @staticmethod
     def run_server(conf):
         hostname = conf.get('hostname')
         port = conf.get('port', default=25)
 
-        server = OmnomnomSMTPServer( (hostname, port), None)
-
-        asyncore.loop()
+        db_manager.create_db(conf.get('db'))
         
+        server = OmnomnomSMTPServer(hostname, port, conf)
+        asyncore.loop()
         
 def main():
     parser = argparse.ArgumentParser(description="Omnomnom SMTP server")

@@ -1,4 +1,5 @@
 yaul
+pymysql
 sqlalchemy
 
 ### Testing
