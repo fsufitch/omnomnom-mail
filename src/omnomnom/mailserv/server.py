@@ -35,7 +35,5 @@ def main():
     parser.add_argument("config", nargs="?", default="/etc/omnomnom/smtpd.json",
                         help="JSON configuration file")
     args = parser.parse_args()
-
     config = Configuration(args.config)
-    
     OmnomnomSMTPServer.run_server(config)
