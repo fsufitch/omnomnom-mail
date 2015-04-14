@@ -1,9 +1,13 @@
 import argparse, asyncore, email
 from smtpd import SMTPServer
+from yaul.service import InitService
 
 from omnomnom.common.config import Configuration
 from omnomnom.common.db import manager as db_manager
 from omnomnom.mailserv.processor import EmailProcessor
+
+PID_PATH = "/var/run/omnomnom_smtpd.pid"
+CONFIG_PATH = "/etc/omnomnom/smtpd.json"
 
 class OmnomnomSMTPServer(SMTPServer):
     def __init__(self, hostname, port, conf):
@@ -32,8 +36,16 @@ class OmnomnomSMTPServer(SMTPServer):
         
 def main():
     parser = argparse.ArgumentParser(description="Omnomnom SMTP server")
-    parser.add_argument("config", nargs="?", default="/etc/omnomnom/smtpd.json",
+    parser.add_argument("config", nargs="?", default=CONFIG_PATH,
                         help="JSON configuration file")
     args = parser.parse_args()
     config = Configuration(args.config)
     OmnomnomSMTPServer.run_server(config)
+
+def service_main():
+    pid_path = PID_PATH
+    config = Configuration(CONFIG_PATH)
+    pid_path = config.get('pid', default=pid_path)
+
+    service = InitService(pidpath, OmnomnomSMTPServer.run_server, args=[config], fork=True)
+    service.run_cmdline()
