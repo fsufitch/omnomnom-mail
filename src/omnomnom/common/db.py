@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Column, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 
 class DBManager(object):
@@ -21,7 +21,7 @@ class DBManager(object):
     @property
     def base(self):
         if not self._base:
-            self._base = declarative_base
+            self._base = declarative_base()
         return self._base
 
     _instance = None
@@ -31,4 +31,19 @@ class DBManager(object):
             cls._instance = cls()
         return cls._instance
 
+    def create_db(self):
+        self.base.metadata.create_all()
+    
 manager = DBManager.instance()
+
+#########
+
+class Email(manager.base):
+    __tablename__ = 'emails'
+    
+    id = Column(Integer, primary_key=True)
+    from_addr = Column(String)
+    to_addrs = Column(String)
+    subject = Column(String)
+    body = Column(Text)
+
