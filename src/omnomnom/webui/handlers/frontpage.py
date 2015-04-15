@@ -10,8 +10,8 @@ class FrontPageHandler(RequestHandler):
 
         session = db_manager.create_session()
         for email in session.query(Email).all():
-            self.write("FROM: " + email.from_addr)
-            self.write("TO: " + email.to_addrs)
-            self.write("SUBJECT: " + email.subject)
-            self.write("BODY:\n" + email.body)
+            self.write("\nFROM: " + email.from_addr)
+            self.write("\nTO: " + email.to_addrs)
+            self.write("\nSUBJECT: " + email.subject)
+            self.write("\nBODY:\n" + email.body)
             self.write("\n\n============ END BODY ==========\n\n")
