@@ -16,7 +16,6 @@ class EmailProcessor(object):
     @staticmethod
     def record_email(message):
         payload = EmailProcessor.get_payload_str(message)
-        payload = payload.decode()
         headers = message.items()
 
         print("ORIGINAL:")
