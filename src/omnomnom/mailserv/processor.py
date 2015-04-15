@@ -9,7 +9,7 @@ class EmailProcessor(object):
                 payload = payload.decode()
             if type(payload) != str:
                 payload = str(payload)
-            return message.get_payload().decode()
+            return message.get_payload()
         contents = [EmailProcessor.get_payload_str(part) for part in message.get_payload()]
         return ''.join(contents)
         
