@@ -1,6 +1,7 @@
 yaul
 pymysql
 sqlalchemy
+tornado
 
 ### Testing
 nose

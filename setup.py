@@ -12,6 +12,8 @@ setup(name='omnomnom',
       entry_points = {'console_scripts': [
           "omnomnom_smtp=omnomnom.mailserv.server:main",
           "omnomnom_smtpd=omnomnom.mailserv.server:service_main",
+          "omnomnom_webui=omnomnom.webui.server:main",
+          "omnomnom_webuid=omnomnom.webui.server:service_main",
       ]},
-      install_requires=['yaul', 'sqlalchemy'],
+      install_requires=['pymysql', 'yaul', 'sqlalchemy', 'tornado'],
 )

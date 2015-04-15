@@ -1,6 +1,6 @@
 import argparse, asyncore, email
 from smtpd import SMTPServer
-from yaul.service import InitService
+from yaul.init import InitService
 
 from omnomnom.common.config import Configuration
 from omnomnom.common.db import manager as db_manager
