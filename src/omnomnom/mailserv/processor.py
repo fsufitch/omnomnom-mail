@@ -4,6 +4,11 @@ class EmailProcessor(object):
     @staticmethod
     def get_payload_str(message):
         if not message.is_multipart():
+            payload = message.get_payload()
+            if type(payload) == bytes:
+                payload = payload.decode()
+            if type(payload) != str:
+                payload = str(payload)
             return message.get_payload().decode()
         contents = [EmailProcessor.get_payload_str(part) for part in message.get_payload()]
         return ''.join(contents)
