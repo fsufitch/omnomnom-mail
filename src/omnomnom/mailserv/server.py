@@ -47,5 +47,5 @@ def service_main():
     config = Configuration(CONFIG_PATH)
     pid_path = config.get('pid', default=pid_path)
 
-    service = InitService(pidpath, OmnomnomSMTPServer.run_server, args=[config], fork=True)
+    service = InitService(pid_path, OmnomnomSMTPServer.run_server, args=[config], fork=True)
     service.run_cmdline()
