@@ -4,7 +4,7 @@ class EmailProcessor(object):
     @staticmethod
     def get_payload_str(message):
         if not message.is_multipart():
-            return message.get_payload(decode=True)
+            return message.get_payload().decode()
         contents = [EmailProcessor.get_payload_str(part) for part in message.get_payload()]
         return ''.join(contents)
         
