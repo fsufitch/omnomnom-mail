@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship, backref
 
 class DBManager(object):
     def __init__(self):
@@ -46,12 +46,41 @@ manager = DBManager.instance()
 
 #########
 
+email_to_address_association_table = Table('email_to_address', manager.base.metadata,
+    Column('email_id', Integer, ForeignKey('emails.id')),
+    Column('address_id', Integer, ForeignKey('addresses.id'))
+)
+
 class Email(manager.base):
     __tablename__ = 'emails'
     
     id = Column(Integer, primary_key=True)
-    from_addr = Column(String(1000))
-    to_addrs = Column(String(8000))
+
+    # Many to one
+    origin_id = Column(Integer, ForeignKey('addresses.id'))
+    origin = relationship('EmailAddress', backref='emails_sent')
+    
+    # Many to many
+    recipients = relationship('EmailAddress', secondary=email_to_address_association_table,
+                              backref='emails_received')
+
+    # One to many
+    headers = relationship('EmailHeader', backref='email')
+    
     subject = Column(String(1000))
     body = Column(Text)
 
+class EmailAddress(manager.base):
+    __tablename__ = 'addresses'
+
+    id = Column(Integer, primary_key=True)
+    address = Column(String(100), unique=True)
+    name = Column(String(100), nullable=True)
+
+class EmailHeader(manager.base):
+    __tablename__ = 'headers'
+
+    id = Column(Integer, primary_key=True)
+    key = Column(String(100))
+    value = Column(String(2000))
+    email_id = Column(Integer, ForeignKey('emails.id'))

@@ -15,14 +15,8 @@ class OmnomnomSMTPServer(SMTPServer):
         self.conf = conf
     
     def process_message(self, peer, mailfrom, rcpttos, data):
-        print("Peer", peer)
-        print("Mailfrom", mailfrom)
-        print("Rcpttos", rcpttos)
-        print("Data", data)
-        print("=================")
-
         msg = email.message_from_string(data)
-        EmailProcessor.record_email(msg)
+        EmailProcessor.record_email(rcpttos, msg)
         
     @staticmethod
     def run_server(conf):
