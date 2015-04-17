@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1> Title here </h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <h3>Top recipients</h3>
+    <ol>
+      <li> (581) foo@omnomnom.email </li>
+      <li> (21) bar@omnomnom.email </li>
+      <li> (5) baz@omnomnom.email </li>
+    </ol>
+    <p>
+      <a href="/address/browse?mode=top_recipient">More...</a>
+    </p>
+  </div>
+  <div class="col-lg-4">
+    <h3>Stats at a glance</h3>
+    <p>
+      <strong>Emails:</strong> 5124
+    </p>
+    <p>
+      <strong>Addresses:</strong> 482
+    </p>
+    <p>
+      <a href="/stats">More...</a>
+    </p>
+  </div>
+
+  <div>
+    <h3>Random address</h3>
+    <p> Need a random address to use or seed? Use this one! </p>
+    <p>
+      <big><code>foobarbaz@omnomnom.email</code></big>
+    </p>
+  </div>
+
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">
+    </div>
+    <hr />
+    
+    <h2>Newest emails</h2>
+    {% for email in newest_emails %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<a href="#">{{email.subject}}</a>
+      </div>
+      <div class="panel-body">
+	<div class="pull-right">
+	  <p> <strong>Time:</strong> {{email.recv_time}}</p>
+	  <p>
+	    <a href="#">
+	      View Details <span class="glyphicon glyphicon-play"></span>
+	    </a>
+	  </p>
+	</div>
+	<p> <strong>From:</strong> {{email.origin.address}} </p>
+	<p> <strong>To:</strong>
+	  {{email.recipients[0].address}}
+	  {% if email.recipients.__len__() > 1 %}
+	    (and {{email.recipients.__len__()-1}} others)
+	  {% endif %}
+	</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="col-md-4">
+    <h2> About Omnomnom </h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing
+      elit. Curabitur viverra non lectus id porttitor. Quisque ornare
+      semper malesuada. Vestibulum a nisl eros. Nunc tristique orci
+      purus, a dapibus ipsum sodales eget. Proin sodales lorem vitae
+      nulla sodales, at lacinia nibh placerat. Nam mauris ante,
+      sodales vitae nisi eget, vehicula sodales augue. Sed ultrices
+      eleifend magna, et molestie tortor commodo sit amet. Vestibulum
+      justo enim, congue et semper quis, egestas quis est. Maecenas in
+      nibh interdum, imperdiet enim ut, varius nulla. Phasellus
+      tincidunt tincidunt tortor non varius. Maecenas ante felis,
+      luctus eget nunc nec, hendrerit interdum nunc. Cras sagittis
+      lorem et justo posuere, eu mattis turpis hendrerit. Vivamus eget
+      dui vitae ex vestibulum euismod euismod mattis felis. 
+    </p>
+    <p>
+      <a href="/about">More...</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

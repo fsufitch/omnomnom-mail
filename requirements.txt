@@ -2,6 +2,7 @@ yaul
 pymysql
 sqlalchemy
 tornado
+jinja2
 
 ### Testing
 nose

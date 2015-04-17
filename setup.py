@@ -15,5 +15,5 @@ setup(name='omnomnom',
           "omnomnom_webui=omnomnom.webui.server:main",
           "omnomnom_webuid=omnomnom.webui.server:service_main",
       ]},
-      install_requires=['pymysql', 'yaul', 'sqlalchemy', 'tornado'],
+      install_requires=['pymysql', 'yaul', 'sqlalchemy', 'tornado', 'jinja2'],
 )

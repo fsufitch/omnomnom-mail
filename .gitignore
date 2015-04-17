@@ -60,3 +60,4 @@ config
 include
 *~
 man/
+*#

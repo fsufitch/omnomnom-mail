@@ -13,10 +13,11 @@ class OmnomnomSMTPServer(SMTPServer):
     def __init__(self, hostname, port, conf):
         super(OmnomnomSMTPServer, self).__init__( (hostname, port), None)
         self.conf = conf
+        self.processor = EmailProcessor()
     
     def process_message(self, peer, mailfrom, rcpttos, data):
         msg = email.message_from_string(data)
-        EmailProcessor.record_email(rcpttos, msg)
+        self.processor.record_email(rcpttos, msg)
         
     @staticmethod
     def run_server(conf):

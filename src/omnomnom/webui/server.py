@@ -13,6 +13,7 @@ PID_PATH = "/var/run/omnomnom_webui.pid"
 CONFIG_PATH = "/etc/omnomnom/webui.json"
 
 PATHS = [
+    URLSpec("/s/(.*)", StaticFileHandler, {'path': resource_filename(__name__, 'static')}),
     URLSpec("/", FrontPageHandler, name='frontpage'),
     ]
 

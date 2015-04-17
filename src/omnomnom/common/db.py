@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Table
+from sqlalchemy import create_engine, Column,  ForeignKey, Table
+from sqlalchemy.types import DateTime, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
 
@@ -69,18 +70,19 @@ class Email(manager.base):
     
     subject = Column(String(1000))
     body = Column(Text)
+    recv_time = Column(DateTime, index=True)
 
 class EmailAddress(manager.base):
     __tablename__ = 'addresses'
 
     id = Column(Integer, primary_key=True)
-    address = Column(String(100), unique=True)
+    address = Column(String(100), index=True, unique=True)
     name = Column(String(100), nullable=True)
 
 class EmailHeader(manager.base):
     __tablename__ = 'headers'
 
     id = Column(Integer, primary_key=True)
-    key = Column(String(100))
+    key = Column(String(100), index=True)
     value = Column(String(2000))
     email_id = Column(Integer, ForeignKey('emails.id'))
