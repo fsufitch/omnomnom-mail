@@ -30,7 +30,7 @@ class AddressController(object):
         addr_name_tuples = []
         for addr in separated:
             addr = addr.strip()
-            name = None
+            name = ''
             email = None
             match = AddressController.NAME_ADDR_EXP.search(addr)
             if match.groups()[2]:
