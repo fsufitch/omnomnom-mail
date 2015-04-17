@@ -17,8 +17,8 @@ class FrontPageHandler(RequestHandler):
 
         ng = NameGenerator.instance()
         random_email = "{adj}_{noun}@omnomnom.email".format(
-            adj=ng.get_adjective(),
-            noun=ng.get_noun()
+            adj=ng.random_adjective(),
+            noun=ng.random_noun()
         )
         
         return {'newest_emails': newest_emails,
