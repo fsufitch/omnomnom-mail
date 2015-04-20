@@ -22,3 +22,6 @@ class EmailProcessor(object):
         self.emailctl.record_email(from_addr, to_addrs, message, commit=False)
         self.session.commit()
 
+    def __del__(self):
+        self.session.close()
+
