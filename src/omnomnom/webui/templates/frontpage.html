@@ -47,22 +47,22 @@
     {% for email in newest_emails %}
     <div class="panel panel-default">
       <div class="panel-heading">
-	<a href="#">{{email.subject}}</a>
+	<a href="#">{{email['subject']}}</a>
       </div>
       <div class="panel-body">
 	<div class="pull-right">
-	  <p> <strong>Time:</strong> {{email.recv_time}}</p>
+	  <p> <strong>Time:</strong> {{email['recv_time']}}</p>
 	  <p>
 	    <a href="#">
 	      View Details <span class="glyphicon glyphicon-play"></span>
 	    </a>
 	  </p>
 	</div>
-	<p> <strong>From:</strong> {{email.origin.address}} </p>
+	<p> <strong>From:</strong> {{email['origin_address']}} </p>
 	<p> <strong>To:</strong>
-	  {{email.recipients[0].address}}
-	  {% if email.recipients.__len__() > 1 %}
-	    (and {{email.recipients.__len__()-1}} others)
+	  {{email['recipient_address']}}
+	  {% if email['num_hidden_recipients'] %}
+	    (and {{email['num_hidden_recipients']}} more)
 	  {% endif %}
 	</p>
       </div>

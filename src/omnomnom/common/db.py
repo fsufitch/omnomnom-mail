@@ -18,7 +18,7 @@ class DBManager(object):
             return self._engine
         if not url:
             raise TypeError("Must specify DB URL for first invocation")
-        self._engine = create_engine(url, echo=True)
+        self._engine = create_engine(url)
         return self._engine
 
     @property
