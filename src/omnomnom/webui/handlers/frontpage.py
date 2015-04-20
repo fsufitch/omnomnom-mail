@@ -25,7 +25,7 @@ class FrontPageHandler(RequestHandler):
                 'num_hidden_recipients': len(email.recipients)-1,
                 })
 
-        #session.close()
+        session.close()
         
         ng = NameGenerator.instance()
         random_email = "{adj}_{noun}@omnomnom.email".format(
