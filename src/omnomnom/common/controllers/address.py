@@ -26,6 +26,8 @@ class AddressController(object):
 
     @staticmethod
     def parse_addresses(addr_str):
+        if not addr_str:
+            return []
         separated = addr_str.split(',')
         addr_name_tuples = []
         for addr in separated:

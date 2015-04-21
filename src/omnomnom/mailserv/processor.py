@@ -11,7 +11,14 @@ class EmailProcessor(object):
         self.addressctl = AddressController(self.session)
         
     def record_email(self, recipients, message):
-        addr, name = AddressController.parse_addresses(message['From'])[0]
+        if message.get('From', None):
+            addr, name = AddressController.parse_addresses(message['From'])[0]
+        elif recipients:
+            addr = recipients[0]
+            name = ''
+        else:
+            raise ValueError("Could not extract recipient address from message")
+            
         from_addr = self.addressctl.update_address(addr, name, commit=False)
         
         to_addrs = []
