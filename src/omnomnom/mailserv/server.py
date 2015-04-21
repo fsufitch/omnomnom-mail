@@ -4,6 +4,8 @@ from yaul.init import InitService
 
 from omnomnom.common.config import Configuration
 from omnomnom.common.db import manager as db_manager
+from omnomnom.common.logging import setup_logging
+from omnomnom.mailserv import logger
 from omnomnom.mailserv.processor import EmailProcessor
 
 PID_PATH = "/var/run/omnomnom_smtpd.pid"
@@ -24,9 +26,14 @@ class OmnomnomSMTPServer(SMTPServer):
         hostname = conf.get('hostname')
         port = conf.get('port', default=25)
 
+        setup_logging(conf.get('logging', 'file'),
+                      conf.get('logging', 'debug', default=False))
+
+        logger.debug("creating db")
         db_manager.create_db(conf.get('db'))
         
         server = OmnomnomSMTPServer(hostname, port, conf)
+        logger.info("listening on %s:%s" % (hostname, port))
         asyncore.loop()
         
 def main():

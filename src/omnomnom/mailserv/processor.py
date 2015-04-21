@@ -3,6 +3,7 @@ import re
 from omnomnom.common.db import manager, Email, EmailAddress, EmailHeader
 from omnomnom.common.controllers.email import EmailController
 from omnomnom.common.controllers.address import AddressController
+from omnomnom.mailserv import logger
 
 class EmailProcessor(object):
     def __init__(self):
@@ -17,7 +18,8 @@ class EmailProcessor(object):
             addr = recipients[0]
             name = ''
         else:
-            raise ValueError("Could not extract recipient address from message")
+            logger.warning("Could not extract recipient address; recipients=%s" % recipients)
+            return
             
         from_addr = self.addressctl.update_address(addr, name, commit=False)
         

@@ -1,5 +1,9 @@
 {
     "hostname": "0.0.0.0",
     "port": 80,
-    "db": "mysql+pymysql://nom:develop@localhost/omnomnom"
+    "db": "mysql+pymysql://nom:develop@localhost/omnomnom",
+    "logging": {
+	"file": "/var/log/omnomnom-webui.log",
+	"debug": true
+    }
 }

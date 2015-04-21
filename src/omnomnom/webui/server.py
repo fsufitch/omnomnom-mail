@@ -7,6 +7,8 @@ from yaul.init import InitService
 
 from omnomnom.common.config import Configuration
 from omnomnom.common.db import manager as db_manager
+from omnomnom.common.logging import setup_logging, log_http
+from omnomnom.webui import logger
 from omnomnom.webui.handlers.frontpage import FrontPageHandler
 
 PID_PATH = "/var/run/omnomnom_webui.pid"
@@ -23,11 +25,17 @@ class OmnomnomWebUIServer(object):
         hostname = conf.get('hostname')
         port = conf.get('port', default=80)
 
+        setup_logging(conf.get('logging', 'file'),
+                      conf.get('logging', 'debug', default=False))
+
+        logger.debug('creating db...')
         db_manager.create_db(conf.get('db'))
 
         application = Application(PATHS)
         application.configuration = conf
         application.listen(port, address=hostname)
+        application.log_request = log_http
+        logger.debug('listening on %s:%s' % (hostname, port))
         IOLoop.instance().start()
 
 def main():
