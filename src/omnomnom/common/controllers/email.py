@@ -40,7 +40,7 @@ class EmailController(object):
 
     MIME_REGEX = re.compile('^([^;]*)(?:;.*charset=([^;]*)(?:;|$)?)?')
     @staticmethod
-    def parse_mime(mime, default=('text/plain', 'ascii')):
+    def parse_mime(mime, default=('text/plain', 'utf-8')):
         if not mime:
             return default
         mime = mime.strip().lower()
