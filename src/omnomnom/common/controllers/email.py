@@ -41,6 +41,8 @@ class EmailController(object):
     MIME_REGEX = re.compile('^([^;]*)(?:;.*charset=([^;]*)(?:;|$)?)?')
     @staticmethod
     def parse_mime(mime, default=('text/plain', 'ascii')):
+        if not mime:
+            return default
         mime = mime.strip().lower()
         match = EmailController.MIME_REGEX.search(mime)
         content_type, encoding = match.groups() if match else (None, None)

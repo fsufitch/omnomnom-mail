@@ -1,0 +1,16 @@
+HELO thisisa.test
+MAIL FROM: foobar@test.com
+RCPT TO: testaddress@omnomnom.com
+DATA
+From: Coolest Dude <omgwtf@example.org>
+Subject: Lol
+this is some content
+this is more content
+
+blah blah
+
+
+.
+
+
+
