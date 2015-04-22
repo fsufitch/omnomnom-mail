@@ -1,4 +1,4 @@
-import logging, traceback
+import logging, traceback, json
 from datetime import datetime
 
 class VerboseFormatter(logging.Formatter):
@@ -8,6 +8,7 @@ class VerboseFormatter(logging.Formatter):
         msg = str(record.msg)
         if record.exc_info:
             msg = self.formatException(record.exc_info)
+
         message = self.TEMPLATE.format(time=timenow,
                                        name=record.name,
                                        level=record.levelname,
@@ -58,6 +59,8 @@ def log_http(request_handler):
         "full_url": httprequest.full_url(),
         "response_status": request_handler.get_status(),
     }
+
+    log_data = json.dumps(log_data)
     
     if 400 <= request_handler.get_status() <= 499: # User error, log warning
         logger.warning(log_data)
