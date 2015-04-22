@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>{{email['subject']}}</h1>
+<p>
+  <big>
+    <strong>From:</strong>
+    <a href="#">
+      {% if sender['name'] %}
+      {{sender['name']|e}} &lt;{{sender['address']|e}}&gt;
+      {% else %}
+      {{sender['address']|e}}
+      {% endif %}
+    </a>
+  </big>
+</p>
+
+<p>
+  <big>
+    <strong>To:</strong>
+    {% for recipient in recipients %}
+    <a href="#">
+      {% if recipient['name'] %}
+      {{recipient['name']|e}} &lt;{{recipient['address']|e}}&gt;
+      {% else %}
+      {{recipient['address']|e}}
+      {% endif %}
+      {% if not loop.last %}, {% endif %}
+    </a>
+    {% endfor %}
+  </big>
+</p>
+
+<hr />
+
+<div class="row">
+  <div class="col-md-4">
+    <h3> Email headers </h3>
+    <ul>
+      {% for k,v in headers %}
+      <li>
+	<strong> {{k|e}}: </strong> {{v|e}}
+      </li>
+      {% endfor %}
+      </ul>
+  </div>
+  <div class="col-md-8">
+    <h3> Email body </h3>
+    <pre>
+      {{email['body']|e}}
+    </pre>
+  </div>
+</div>
+{% endblock %}

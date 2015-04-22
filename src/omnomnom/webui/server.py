@@ -10,6 +10,7 @@ from omnomnom.common.db import manager as db_manager
 from omnomnom.common.logging import setup_logging, log_http
 from omnomnom.webui import logger
 from omnomnom.webui.handlers.frontpage import FrontPageHandler
+from omnomnom.webui.handlers.email import EmailViewHandler
 
 PID_PATH = "/var/run/omnomnom_webui.pid"
 CONFIG_PATH = "/etc/omnomnom/webui.json"
@@ -17,6 +18,7 @@ CONFIG_PATH = "/etc/omnomnom/webui.json"
 PATHS = [
     URLSpec("/s/(.*)", StaticFileHandler, {'path': resource_filename(__name__, 'static')}),
     URLSpec("/", FrontPageHandler, name='frontpage'),
+    URLSpec("/email/view/(.*)", EmailViewHandler, name='email_view'),
     ]
 
 class OmnomnomWebUIServer(object):

@@ -1,6 +1,8 @@
 import re
 
 from datetime import datetime
+from sqlalchemy.orm.exc import NoResultFound
+
 from omnomnom.common.db import Email, EmailHeader
 
 class EmailController(object):
@@ -11,6 +13,13 @@ class EmailController(object):
         query = self.session.query(Email).order_by(Email.recv_time.desc())
         return query[:5]
 
+    def get_by_id(self, email_id):
+        query = self.session.query(Email).filter(Email.id==email_id)
+        try:
+            return query.one()
+        except NoResultFound:
+            return None
+    
     def build_headers(self, message):
         headers = []
         for k,v in message.items():

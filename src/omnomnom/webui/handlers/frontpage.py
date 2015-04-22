@@ -23,6 +23,7 @@ class FrontPageHandler(RequestHandler):
                 'origin_address': email.origin.address,
                 'recipient_address': email.recipients[0].address,
                 'num_hidden_recipients': len(email.recipients)-1,
+                'view_url': self.reverse_url('email_view', email.id),
                 })
 
         session.close()

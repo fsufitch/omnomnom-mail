@@ -47,13 +47,13 @@
     {% for email in newest_emails %}
     <div class="panel panel-default">
       <div class="panel-heading">
-	<a href="#">{{email['subject']}}</a>
+	<a href="{{email['view_url']}}">{{email['subject']}}</a>
       </div>
       <div class="panel-body">
 	<div class="pull-right">
 	  <p> <strong>Time:</strong> {{email['recv_time']}}</p>
 	  <p>
-	    <a href="#">
+	    <a href="{{email['view_url']}}">
 	      View Details <span class="glyphicon glyphicon-play"></span>
 	    </a>
 	  </p>
