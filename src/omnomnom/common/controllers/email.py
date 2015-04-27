@@ -5,6 +5,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from omnomnom.common.db import Email, EmailHeader
 from omnomnom.common.util import EmailUtil
+from omnomnom.common import logger
 
 class EmailController(object):
     def __init__(self, session):
@@ -40,7 +41,11 @@ class EmailController(object):
 
         original = EmailUtil.render_to_original(message)
         body_plain = EmailUtil.render_content(message, allow_html=False)
+        logger.debug('Got plain body:')
+        logger.debug(body_plain)
         body_html = EmailUtil.render_content(message, allow_html=True)
+        logger.debug('Got HTML body:')
+        logger.debug(body_html)
             
         mail = Email(origin=from_addr,
                      recipients=to_addrs,

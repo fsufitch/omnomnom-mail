@@ -1,0 +1,40 @@
+HELO test-client
+MAIL FROM: fsufitchi@gmail.com
+RCPT TO: blahblah@omnomnom.email
+DATA
+MIME-Version: 1.0
+Received: by 10.13.217.79 with HTTP; Mon, 27 Apr 2015 12:38:04 -0700 (PDT)
+Date: Mon, 27 Apr 2015 15:38:04 -0400
+Delivered-To: fsufitchi@gmail.com
+Message-ID: <CAAacOa4XodAZt6EgfgM1M4S6+idfb3+vPT3MLXU0Wk06Bxtf=A@mail.gmail.com>
+Subject: foo bar baz
+From: Filip Sufitchi <fsufitchi@gmail.com>
+To: blahblah@omnomnom.email
+Content-Type: multipart/alternative; boundary=001a1139b7406ffc590514b9e25c
+
+--001a1139b7406ffc590514b9e25c
+Content-Type: text/plain; charset=UTF-8
+
+asdjkfhsadf
+sssdfadfsadf
+
+
+
+Filip Sufitchi
+
+http://www.opensourcenerd.com
+
+--001a1139b7406ffc590514b9e25c
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>asdjkfhsadf</div><div>sssdfadfsadf</div><div><br></di=
+v><div><br></div><br clear=3D"all"><div><div class=3D"gmail_signature">Fili=
+p Sufitchi<br><br><a href=3D"http://www.opensourcenerd.com" target=3D"_blan=
+k">http://www.opensourcenerd.com</a></div></div>
+</div>
+
+--001a1139b7406ffc590514b9e25c--
+
+.
+

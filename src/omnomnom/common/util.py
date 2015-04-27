@@ -22,7 +22,7 @@ class EmailUtil(object):
     @staticmethod
     def render_content(msg, allow_html=False):
         content_type, encoding = EmailUtil.parse_mime(msg.get('Content-Type'))
-        logger.debug('Render content: %s/%s, allow_html=' % (content_type, encoding, allow_html))
+        logger.debug('Render content: %s/%s, allow_html=%s' % (content_type, encoding, allow_html))
         if not 'multipart' in content_type:
             if content_type.startswith('text'):
                 logger.debug('Rendered message as: %s/%s' % (content_type, encoding))
@@ -58,7 +58,7 @@ class EmailUtil(object):
                     chosen_msg = sub_msg
             if chosen_msg:
                 logger.debug('Chose mail with content-type: %s' % chosen_msg.get('Content-Type'))
-                content = EmailUtil.render_content(sub_msg, allow_html=allow_html)
+                content = EmailUtil.render_content(chosen_msg, allow_html=allow_html)
             else:
                 logger.debug('No viable content chosen')
                 content = "[[Omnomnom :: no viable multipart content type found]]"
