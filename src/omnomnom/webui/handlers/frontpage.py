@@ -2,7 +2,7 @@ from tornado.web import RequestHandler
 
 from omnomnom.common.db import manager as db_manager
 from omnomnom.common.controllers.email import EmailController
-from omnomnom.common.wordgen.generator import NameGenerator
+from omnomnom.common.wordgen.email import EmailGenerator
 from omnomnom.webui.util import apply_template, write_return
 
 class FrontPageHandler(RequestHandler):
@@ -28,11 +28,8 @@ class FrontPageHandler(RequestHandler):
 
         session.close()
         
-        ng = NameGenerator.instance()
-        random_email = "{adj}_{noun}@omnomnom.email".format(
-            adj=ng.random_adjective(),
-            noun=ng.random_noun()
-        )
+        email_gen = EmailGenerator.instance()
+        random_email = email_gen.generate()
 
         return {'newest_emails': email_data,
                 'random_email': random_email}
