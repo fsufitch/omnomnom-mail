@@ -20,6 +20,9 @@ class EmailProcessor(object):
         else:
             logger.warning("Could not extract recipient address; recipients=%s" % recipients)
             return
+
+        if not addr.lower().endswith('@omnomnom.email'):
+            return # Ignore non-omnomnom mail
             
         from_addr = self.addressctl.update_address(addr, name, commit=False)
         
