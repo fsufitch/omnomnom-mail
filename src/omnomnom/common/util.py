@@ -39,6 +39,8 @@ class EmailUtil(object):
             # Choose based on their content types
             chosen_msg = None
             for sub_msg in msg.get_payload():
+                logger.debug('Sub-message:')
+                logger.debug(sub_msg)
                 sub_mime = EmailUtil.parse_mime(sub_msg.get('Content-Type'))
                 sub_type, sub_enc = sub_mime
                 if sub_type == 'text/plain':
