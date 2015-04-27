@@ -14,24 +14,27 @@ class EmailProcessor(object):
     def record_email(self, recipients, message):
         if message.get('From', None):
             addr, name = AddressController.parse_addresses(message['From'])[0]
-        elif recipients:
-            addr = recipients[0]
-            name = ''
         else:
-            logger.warning("Could not extract recipient address; recipients=%s" % recipients)
+            logger.info("Dropping email; could not extract origin address")
             return
 
-        if not addr.lower().endswith('@omnomnom.email'):
-            logger.info("Dropped email from invalid recipient (%s)" % addr)
-            return # Ignore non-omnomnom mail
-            
         from_addr = self.addressctl.update_address(addr, name, commit=False)
         
         to_addrs = []
         for addr_str in recipients:
+            if not addr_str.endswith('@omnomnom.email'):
+                continue
             to_addr = self.addressctl.update_address(addr_str, commit=False)
             to_addrs.append(to_addr)
+        if not to_addrs and recipients and recipients[0].endswith('@omnomnom.email'):
+            to_addr = self.addressctl.update_address(recipients[0], commit=False)
+            to_addrs.append(to_addr)
 
+        if not to_addrs:
+            logger.info("Dropping email; no valid recipients (origin: %s)" % from_addr.address)
+            self.session.rollback()
+            return
+            
         self.emailctl.record_email(from_addr, to_addrs, message, commit=False)
         self.session.commit()
 
