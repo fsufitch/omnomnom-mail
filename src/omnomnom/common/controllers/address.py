@@ -7,6 +7,9 @@ class AddressController(object):
     def __init__(self, session):
         self.session = session
 
+    def count_all(self):
+        return self.session.query(EmailAddress).count()
+        
     def update_address(self, address, name='', commit=True):
         address = address.lower()
         name = name.strip()

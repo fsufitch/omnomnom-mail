@@ -2,6 +2,7 @@ from tornado.web import RequestHandler
 
 from omnomnom.common.db import manager as db_manager
 from omnomnom.common.controllers.email import EmailController
+from omnomnom.common.controllers.address import AddressController
 from omnomnom.common.wordgen.email import EmailGenerator
 from omnomnom.webui.util import apply_template, write_return
 
@@ -26,10 +27,18 @@ class FrontPageHandler(RequestHandler):
                 'view_url': self.reverse_url('email_view', email.id),
                 })
 
+        email_count = emailctl.count_all()
+
+        addrctl = AddressController(session)
+        addr_count = addrctl.count_all()
+        
         session.close()
         
         email_gen = EmailGenerator.instance()
         random_email = email_gen.generate()
 
+
         return {'newest_emails': email_data,
+                'email_count': email_count,
+                'addr_count': addr_count,
                 'random_email': random_email}

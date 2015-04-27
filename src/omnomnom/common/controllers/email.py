@@ -9,6 +9,9 @@ class EmailController(object):
     def __init__(self, session):
         self.session = session
 
+    def count_all(self):
+        return self.session.query(Email).count()
+        
     def get_newest(self, number=5):
         query = self.session.query(Email).order_by(Email.recv_time.desc())
         return query[:5]
