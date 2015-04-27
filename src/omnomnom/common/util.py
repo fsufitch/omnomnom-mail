@@ -22,7 +22,7 @@ class EmailUtil(object):
         content_type, encoding = EmailUtil.parse_mime(msg.get('Content-Type'))
         if not 'multipart' in content_type:
             if content_type.startswith('text'):
-                return msg.get_payload(decode=True)
+                return 'RENDERED AS ' + content_type + '\n\n' +msg.get_payload(decode=True)
             else:
                 return '[[Omnomnom :: Unknown content type: %s]]' % content_type
 

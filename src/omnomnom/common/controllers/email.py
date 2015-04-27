@@ -40,7 +40,7 @@ class EmailController(object):
 
         original = EmailUtil.render_to_original(message)
         body_plain = EmailUtil.render_content(message, allow_html=False)
-        body_html = EmailUtil.render_content(message, allow_html=False)
+        body_html = EmailUtil.render_content(message, allow_html=True)
             
         mail = Email(origin=from_addr,
                      recipients=to_addrs,
