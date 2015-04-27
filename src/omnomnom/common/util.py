@@ -1,5 +1,7 @@
 import re
 
+from omnomnom.common import logger
+
 class EmailUtil(object):
     MIME_REGEX = re.compile('^([^;]*)(?:;.*charset=([^;]*)(?:;|$)?)?')
     @staticmethod
