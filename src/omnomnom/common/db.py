@@ -69,7 +69,9 @@ class Email(manager.base):
     headers = relationship('EmailHeader', backref='email')
     
     subject = Column(String(1000))
-    body = Column(Text)
+    original = Column(Text)
+    body_plain = Column(Text)
+    body_html = Column(Text)
     recv_time = Column(DateTime, index=True)
 
 class EmailAddress(manager.base):

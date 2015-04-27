@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy.orm.exc import NoResultFound
 
 from omnomnom.common.db import Email, EmailHeader
+from omnomnom.common.util import EmailUtil
 
 class EmailController(object):
     def __init__(self, session):
@@ -36,12 +37,18 @@ class EmailController(object):
     def record_email(self, from_addr, to_addrs, message, commit=True):
         headers = self.build_headers(message)
         payload = EmailController.get_payload_str(message)
+
+        original = EmailUtil.render_to_original(message)
+        body_plain = EmailUtil.render_content(message, allow_html=False)
+        body_html = EmailUtil.render_content(message, allow_html=False)
             
         mail = Email(origin=from_addr,
                      recipients=to_addrs,
                      headers=headers,
                      subject=message['Subject'],
-                     body=payload,
+                     original=original,
+                     body_plain=body_plain,
+                     body_html=body_html,
                      recv_time=datetime.utcnow()
         )
         

@@ -45,10 +45,8 @@
       </ul>
   </div>
   <div class="col-md-8">
-    <h3> Email body </h3>
-    <pre>
-      {{email['body']|e}}
-    </pre>
+    <h3> Email body (rendered as plain-text) </h3>
+    <pre>{{email['body_plain']|e}}</pre>
   </div>
 </div>
 {% endblock %}

@@ -20,7 +20,8 @@ class EmailViewHandler(RequestHandler):
                 'id': email.id,
                 'subject': email.subject,
                 'recv_time': email.recv_time,
-                'body': email.body,
+                'original': email.original,
+                'body_plain': email.body_plain,
             },
             'sender': {
                 'address': email.origin.address,
