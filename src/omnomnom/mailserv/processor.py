@@ -22,6 +22,7 @@ class EmailProcessor(object):
             return
 
         if not addr.lower().endswith('@omnomnom.email'):
+            logger.info("Dropped email from invalid recipient (%s)" % addr)
             return # Ignore non-omnomnom mail
             
         from_addr = self.addressctl.update_address(addr, name, commit=False)
