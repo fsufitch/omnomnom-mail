@@ -18,8 +18,11 @@ class OmnomnomSMTPServer(SMTPServer):
         self.processor = EmailProcessor()
     
     def process_message(self, peer, mailfrom, rcpttos, data):
-        msg = email.message_from_string(data)
-        self.processor.record_email(rcpttos, msg)
+        try:
+            msg = email.message_from_string(data)
+            self.processor.record_email(rcpttos, msg)
+        except Exception as e:
+            logger.exception(e)
         
     @staticmethod
     def run_server(conf):
