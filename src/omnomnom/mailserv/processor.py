@@ -35,7 +35,7 @@ class EmailProcessor(object):
             self.session.rollback()
             return
 
-        logger.debug("Recording email from <%s> to: " % (from_addr.address, to_addrs))
+        logger.debug("Recording email from <%s> to: %s " % (from_addr.address, to_addrs))
         self.emailctl.record_email(from_addr, to_addrs, message, commit=False)
         self.session.commit()
         logger.debug("Committed!")
