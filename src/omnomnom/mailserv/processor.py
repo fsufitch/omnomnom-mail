@@ -34,9 +34,11 @@ class EmailProcessor(object):
             logger.info("Dropping email; no valid recipients (origin: %s)" % from_addr.address)
             self.session.rollback()
             return
-            
+
+        logger.debug("Recording email from <%s> to: " % (from_addr.address, to_addrs))
         self.emailctl.record_email(from_addr, to_addrs, message, commit=False)
         self.session.commit()
+        logger.debug("Committed!")
 
     def __del__(self):
         self.session.close()
