@@ -21,7 +21,7 @@ class EmailUtil(object):
         if not disposition:
             return default
         disposition = disposition.strip().lower()
-        match = EmailUtil.ATTACH_REGEX.search(mime)
+        match = EmailUtil.ATTACH_REGEX.search(disposition)
         attachment = match.groups()[0] if match else (None, None)
         attachment = (attachment or default).lower()
         return attachment
