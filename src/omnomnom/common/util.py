@@ -15,6 +15,17 @@ class EmailUtil(object):
         encoding = (encoding or default[1]).lower()
         return content_type, encoding
 
+    ATTACH_REGEX = re.compile('^(?:[^;]*)(?:;.*filename=([^;]*)(?:;|$)?)?')
+    @staticmethod
+    def parse_filename(disposition, default=''):
+        if not disposition:
+            return default
+        disposition = disposition.strip().lower()
+        match = EmailUtil.ATTACH_REGEX.search(mime)
+        attachment = match.groups()[0] if match else (None, None)
+        attachment = (attachment or default).lower()
+        return attachment
+
     @staticmethod
     def render_to_original(msg):
         return msg.as_string()
@@ -24,11 +35,14 @@ class EmailUtil(object):
         content_type, encoding = EmailUtil.parse_mime(msg.get('Content-Type'))
         logger.debug('Render content: %s/%s, allow_html=%s' % (content_type, encoding, allow_html))
         if not 'multipart' in content_type:
+            attachment = EmailUtil.parse_filename(msg.get('Content-Disposition'))
+            if attachment:
+                return '[[Omnomnom :: Ommitted attachment `%s` (type: %s)]]\n' % (attachment, content_type)
             if content_type.startswith('text'):
                 logger.debug('Rendered message as: %s/%s' % (content_type, encoding))
                 return msg.get_payload(decode=True).decode(encoding)
             else:
-                return '[[Omnomnom :: Unknown content type: %s]]' % content_type
+                return '[[Omnomnom :: Unknown inline content type: %s]]\n' % content_type
 
         content = ''
         if ('mixed' in content_type or
