@@ -40,20 +40,20 @@
 
 <div class="row">
   <div class="col-md-2">
-    <ul class="nav nav-pills nav-stacked text-right">
-      <li role="presentation" class="active">
-	<a href="#plain" aria-controls="plain" role="pill" data-toggle="pill">Plain Text</a>
+    <ul class="nav nav-pills nav-stacked" id="tab-container">
+      <li role="presentation">
+	<a href="#plain" role="tab">Plain Text</a>
       </li>
       <li role="presentation">
-	<a href="#headers" aria-controls="headers" role="pill" data-toggle="pill">Mail Headers</a>
+	<a href="#headers" role="tab">Mail Headers</a>
       </li>
       <li role="presentation">
-	<a href="#html" aria-controls="html" role="pill" data-toggle="pill">HTML Rendered
+	<a href="#html" role="tab">HTML Rendered
 	  <span class="glyphicon glyphicon-warning-sign"></span>
 	</a>
       </li>
       <li role="presentation">
-	<a href="#original" aria-controls="original" role="pill" data-toggle="pill">Original
+	<a href="#original" role="tab">Original
 	  <span class="glyphicon glyphicon-warning-sign"></span>
 	</a>
       </li>
@@ -61,7 +61,7 @@
   </div>
   <div class="col-md-10">
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="plain">
+      <div role="tabpanel" class="tab-pane" id="plain">
 	<h3> Email body <small>as plain-text</small> </h3>
 	<p> This is the email flattened into plain text, preferring it over HTML if possible.
 	  Attachments are dropped for security. </p>
@@ -86,24 +86,28 @@
 	</table>
       </div>
       <div role="tabpanel" class="tab-pane" id="html">
-	
+	html
       </div>
       <div role="tabpanel" class="tab-pane" id="original">
 	<h3>Email body <small>original</small></h3>
 	<p>
 	  This is the full, original text of the email that the Omnomnom SMTP server received.
 	</p>
+	{% if email['original_truncated']: %}
 	<div class="alert alert-warning">
 	  <p>
 	    <strong> <span class="glyphicon glyphicon-warning-sign"></span> Large content warning! </strong>
-	    There is (currently) no size limit on the email body. Because of this, it is not loaded
-	    by default when you access this tab. Loading the full body may result in long load times,
+	    There is (currently) no size limit on the original email. Because of this, only the first 1000 characters
+	    are loaded by default instead of the full original. Loading the full data may result in long load times,
 	    or overload your browser. 
 	  </p>
 	  <p>
 	    <button class="btn btn-danger" type="submit">Load full email original body</button>
 	  </p>
 	</div>
+	{% endif %}
+	<pre>{{email['original']}}</pre>
+
       </div>
       
     </div>
