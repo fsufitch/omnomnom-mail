@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column,  ForeignKey, Table
-from sqlalchemy.types import DateTime, Integer
-from sqlalchemy.types import Unicode as UString
-from sqlalchemy.types import UnicodeText as UText
+from sqlalchemy.types import DateTime, Integer, String, Text
+#from sqlalchemy.types import Unicode as UString
+#from sqlalchemy.types import UnicodeText as UText
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
 
@@ -70,23 +70,23 @@ class Email(manager.base):
     # One to many
     headers = relationship('EmailHeader', backref='email')
     
-    subject = Column(UString(1000))
-    original = Column(UText)
-    body_plain = Column(UText)
-    body_html = Column(UText)
+    subject = Column(String(1000))
+    original = Column(Text)
+    body_plain = Column(Text)
+    body_html = Column(Text)
     recv_time = Column(DateTime, index=True)
 
 class EmailAddress(manager.base):
     __tablename__ = 'addresses'
 
     id = Column(Integer, primary_key=True)
-    address = Column(UString(100), index=True, unique=True)
-    name = Column(UString(100), nullable=True)
+    address = Column(String(100), index=True, unique=True)
+    name = Column(String(100), nullable=True)
 
 class EmailHeader(manager.base):
     __tablename__ = 'headers'
 
     id = Column(Integer, primary_key=True)
-    key = Column(UString(100), index=True)
-    value = Column(UString(2000))
+    key = Column(String(100), index=True)
+    value = Column(String(2000))
     email_id = Column(Integer, ForeignKey('emails.id'))
