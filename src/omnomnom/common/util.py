@@ -33,12 +33,14 @@ class EmailUtil(object):
     @staticmethod
     def render_content(msg, allow_html=False):
         content_type, encoding = EmailUtil.parse_mime(msg.get('Content-Type'))
+        content_disposition = msg.get('Content-Disposition')
         logger.debug('Render content: %s;%s, allow_html=%s' % (content_type, encoding, allow_html))
         if not msg.is_multipart():
-            attachment = EmailUtil.parse_filename(msg.get('Content-Disposition'))
-            if attachment:
+            if content_disposition and 'attachment' in content_disposition:
+                attachment = EmailUtil.parse_filename(content_disposition)
+                attachment = attachment or "Content-Disposition: %s" % content_disposition
                 logger.debug('Non-multipart message is an attachment; omitting.')
-                return '[[Omnomnom :: Omitted attachment `%s` (type: %s)]]\n' % (attachment, content_type)
+                return '[[Omnomnom :: Omitted attachment: %s (type: %s)]]\n' % (attachment, content_type)
             if content_type.startswith('text'):
                 logger.debug('Rendered message as: %s;%s' % (content_type, encoding))
                 return msg.get_payload(decode=True).decode(encoding)
@@ -49,7 +51,8 @@ class EmailUtil(object):
         content = ''
         if ('mixed' in content_type or
             'digest' in content_type or
-            'parallel' in content_type):
+            'parallel' in content_type or
+            'related' in content_type):
             # These types have sequential message reading
             logger.debug("Sequential multipart; iterating")
             for sub_msg in msg.get_payload():
