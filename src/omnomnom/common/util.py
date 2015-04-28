@@ -33,15 +33,17 @@ class EmailUtil(object):
     @staticmethod
     def render_content(msg, allow_html=False):
         content_type, encoding = EmailUtil.parse_mime(msg.get('Content-Type'))
-        logger.debug('Render content: %s/%s, allow_html=%s' % (content_type, encoding, allow_html))
-        if not 'multipart' in content_type:
+        logger.debug('Render content: %s;%s, allow_html=%s' % (content_type, encoding, allow_html))
+        if not msg.is_multipart():
             attachment = EmailUtil.parse_filename(msg.get('Content-Disposition'))
             if attachment:
-                return '[[Omnomnom :: Ommitted attachment `%s` (type: %s)]]\n' % (attachment, content_type)
+                logger.debug('Non-multipart message is an attachment; omitting.')
+                return '[[Omnomnom :: Omitted attachment `%s` (type: %s)]]\n' % (attachment, content_type)
             if content_type.startswith('text'):
-                logger.debug('Rendered message as: %s/%s' % (content_type, encoding))
+                logger.debug('Rendered message as: %s;%s' % (content_type, encoding))
                 return msg.get_payload(decode=True).decode(encoding)
             else:
+                logger.debug('Unknown content type (%s); omitting.' % content_type)
                 return '[[Omnomnom :: Unknown inline content type: %s]]\n' % content_type
 
         content = ''
