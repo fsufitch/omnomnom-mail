@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 
+{% block head %}
+{{super()}}
+<script src="/s/js/email.js"></script>
+{% endblock %}
+
 {% block body %}
 <h1>{{email['subject']}}</h1>
 <p>
@@ -34,19 +39,74 @@
 <hr />
 
 <div class="row">
-  <div class="col-md-4">
-    <h3> Email headers </h3>
-    <ul>
-      {% for k,v in headers %}
-      <li>
-	<strong> {{k|e}}: </strong> {{v|e}}
+  <div class="col-md-2">
+    <ul class="nav nav-pills nav-stacked text-right">
+      <li role="presentation" class="active">
+	<a href="#plain" aria-controls="plain" role="pill" data-toggle="pill">Plain Text</a>
       </li>
-      {% endfor %}
-      </ul>
+      <li role="presentation">
+	<a href="#headers" aria-controls="headers" role="pill" data-toggle="pill">Mail Headers</a>
+      </li>
+      <li role="presentation">
+	<a href="#html" aria-controls="html" role="pill" data-toggle="pill">HTML Rendered
+	  <span class="glyphicon glyphicon-warning-sign"></span>
+	</a>
+      </li>
+      <li role="presentation">
+	<a href="#original" aria-controls="original" role="pill" data-toggle="pill">Original
+	  <span class="glyphicon glyphicon-warning-sign"></span>
+	</a>
+      </li>
+    </ul>
   </div>
-  <div class="col-md-8">
-    <h3> Email body (rendered as plain-text) </h3>
-    <pre>{{email['body_plain']|e}}</pre>
+  <div class="col-md-10">
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="plain">
+	<h3> Email body <small>as plain-text</small> </h3>
+	<p> This is the email flattened into plain text, preferring it over HTML if possible.
+	  Attachments are dropped for security. </p>
+	<pre>{{email['body_plain']|e}}</pre>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="headers">
+        <h3> Email headers </h3>
+	<p> This is a key/value table of the headers specified by the top level message.
+	  This is the email's metadata, and can be used to learn a variety of facts about the email.
+	</p>
+	<table class="table">
+	  <tr>
+	    <th> Field Name </th>
+	    <th> Value </th>
+	  </tr>
+	  {% for k,v in headers %}
+	  <tr>
+	    <td> <strong> <code>{{k|e}}</code> </strong> </td>
+	    <td> <code>{{v|e}}</code> </td>
+	  </tr>
+	  {% endfor %}
+	</table>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="html">
+	
+      </div>
+      <div role="tabpanel" class="tab-pane" id="original">
+	<h3>Email body <small>original</small></h3>
+	<p>
+	  This is the full, original text of the email that the Omnomnom SMTP server received.
+	</p>
+	<div class="alert alert-warning">
+	  <p>
+	    <strong> <span class="glyphicon glyphicon-warning-sign"></span> Large content warning! </strong>
+	    There is (currently) no size limit on the email body. Because of this, it is not loaded
+	    by default when you access this tab. Loading the full body may result in long load times,
+	    or overload your browser. 
+	  </p>
+	  <p>
+	    <button class="btn btn-danger" type="submit">Load full email original body</button>
+	  </p>
+	</div>
+      </div>
+      
+    </div>
   </div>
 </div>
 {% endblock %}
