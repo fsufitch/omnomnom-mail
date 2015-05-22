@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1> Browsing sender: {{address|e}}
+  {% if name: %}
+    <small> (Name guess: {{name|e}}) </small>
+  {% endif %}
+</h1>
+<p> blah </p>
+{% endblock %}

@@ -28,6 +28,7 @@ class EmailViewHandler(RequestHandler):
             'sender': {
                 'address': email.origin.address,
                 'name': email.origin.name,
+                'browse_url': self.reverse_url('sender_browse', email.origin.address)
             },
             'headers': [],
             'recipients': [],

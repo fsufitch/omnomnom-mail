@@ -1,4 +1,4 @@
-import random, string
+import random, string, traceback
 
 from jinja2 import Environment, PackageLoader
 
@@ -33,3 +33,25 @@ def write_return(func):
         if type(result) in (str, bytes):
             _self.write(result)
     return _write_return
+
+
+class HTTPErrorResponse(object):
+    def __init__(self, handler, http_status, message, include_tb=False):
+        self.handler = handler
+        self.http_status = http_status
+        self.message = message
+        self.include_tb = include_tb
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, tb):
+        if exc_value is None:
+            return True
+        self.handler.set_status(self.http_status)
+        msg = "{}: {}".format(self.http_status, self.message)
+        if self.include_tb:
+            msg += "\n" + traceback.format_tb(tb)
+        self.handler.write(msg)
+        self.handler.finish()
+        return False

@@ -10,6 +10,10 @@ class AddressController(object):
     def count_all(self):
         return self.session.query(EmailAddress).count()
         
+    def search_by_address(self, address):
+        query = self.session.query(EmailAddress).filter(EmailAddress.address==address)
+        return query.first()
+
     def update_address(self, address, name='', commit=True):
         address = address.lower()
         name = name.strip()

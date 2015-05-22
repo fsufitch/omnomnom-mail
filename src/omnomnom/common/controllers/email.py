@@ -18,6 +18,13 @@ class EmailController(object):
         query = self.session.query(Email).order_by(Email.recv_time.desc())
         return query[:5]
 
+    def get_by_sender(self, address, start=0, count=20):
+        query = self.session.query(Email)
+        query = query.filter(Email.origin==address)
+        query = query.order_by(Email.recv_time.desc())
+        query = query.limit(count).offset(start)
+        return query.all()
+    
     def get_by_id(self, email_id):
         query = self.session.query(Email).filter(Email.id==email_id)
         try:
